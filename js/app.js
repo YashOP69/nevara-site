@@ -26,7 +26,8 @@
                 ownerInitial: "R",
                 verified: true,
                 gradientFrom: "#667eea",
-                gradientTo: "#764ba2"
+                gradientTo: "#764ba2",
+                image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=85"
             },
             {
                 id: 2,
@@ -44,7 +45,8 @@
                 ownerInitial: "P",
                 verified: true,
                 gradientFrom: "#f093fb",
-                gradientTo: "#f5576c"
+                gradientTo: "#f5576c",
+                image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=900&q=85"
             },
             {
                 id: 3,
@@ -62,7 +64,8 @@
                 ownerInitial: "S",
                 verified: true,
                 gradientFrom: "#4facfe",
-                gradientTo: "#00f2fe"
+                gradientTo: "#00f2fe",
+                image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=85"
             },
             {
                 id: 4,
@@ -80,7 +83,8 @@
                 ownerInitial: "A",
                 verified: true,
                 gradientFrom: "#fa709a",
-                gradientTo: "#fee140"
+                gradientTo: "#fee140",
+                image: "https://images.unsplash.com/photo-1593642532400-2682810df593?auto=format&fit=crop&w=900&q=85"
             },
             {
                 id: 5,
@@ -98,7 +102,8 @@
                 ownerInitial: "V",
                 verified: true,
                 gradientFrom: "#a8edea",
-                gradientTo: "#fed6e3"
+                gradientTo: "#fed6e3",
+                image: "https://content.booqablecdn.com/uploads/6013dd95a10f2c7e2dbe431c0209d7ec/photo/photo/e6d2a819-06c4-429b-83c6-adaa6bda6544/1743926907-231343336637404-0130-1169/upload.jpeg"
             },
             {
                 id: 6,
@@ -116,7 +121,8 @@
                 ownerInitial: "A",
                 verified: true,
                 gradientFrom: "#ff9a9e",
-                gradientTo: "#fecfef"
+                gradientTo: "#fecfef",
+                image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=900&q=85"
             }
         ];
 
@@ -476,16 +482,7 @@
             grid.innerHTML = filtered.map(l => `
                 <div class="listing-card" onclick="showDetail(${l.id})">
                     <div class="listing-image" style="background: linear-gradient(135deg, ${l.gradientFrom} 0%, ${l.gradientTo} 100%);">
-                        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="grad${l.id}" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:${l.gradientFrom};stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:${l.gradientTo};stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <rect width="300" height="180" fill="url(#grad${l.id})"/>
-                            <text x="50%" y="90" font-size="56" fill="rgba(255,255,255,0.2)" text-anchor="middle" dominant-baseline="middle" font-weight="bold">${l.title.substring(0, 2)}</text>
-                        </svg>
+                        ${l.image ? `<img src="${l.image}" alt="${l.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">` : `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="180" fill="url(#grad${l.id})"/><text x="50%" y="90" font-size="56" fill="rgba(255,255,255,0.2)" text-anchor="middle" dominant-baseline="middle" font-weight="bold">${l.title.substring(0, 2)}</text></svg>`}
                     </div>
                     <div class="listing-info">
                         <div class="listing-title">${l.title}</div>
@@ -511,16 +508,7 @@
             detailContent.innerHTML = `
                 <div class="detail-grid">
                     <div class="detail-image" style="background: linear-gradient(135deg, ${listing.gradientFrom} 0%, ${listing.gradientTo} 100%);">
-                        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="detailGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:${listing.gradientFrom};stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:${listing.gradientTo};stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <rect width="300" height="400" fill="url(#detailGrad)"/>
-                            <text x="50%" y="200" font-size="120" fill="rgba(255,255,255,0.15)" text-anchor="middle" dominant-baseline="middle" font-weight="bold">${listing.title.substring(0, 2)}</text>
-                        </svg>
+                        ${listing.image ? `<img src="${listing.image}" alt="${listing.title}" style="width:100%;height:100%;object-fit:cover;display:block;">` : `<svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="400" fill="${listing.gradientFrom}"/><text x="50%" y="200" font-size="120" fill="rgba(255,255,255,0.15)" text-anchor="middle" dominant-baseline="middle" font-weight="bold">${listing.title.substring(0, 2)}</text></svg>`}
                     </div>
                     <div>
                         <h1>${listing.title}</h1>
