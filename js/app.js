@@ -31,7 +31,7 @@
             },
             {
                 id: 2,
-                title: "IIIT Data Structures Textbook",
+                title: "Accounting Book",
                 type: "item",
                 category: "books",
                 price: 50,
@@ -40,13 +40,13 @@
                 distance: "2.1 km",
                 rating: 4.9,
                 reviews: 18,
-                description: "Latest edition data structures textbook. Great condition, perfect for semester exams or learning DSA. Annotated with solutions.",
+                description: "Latest edition accounting textbook. Great condition, perfect for semester exams. Annotated with solutions.",
                 owner: "Priya S.",
                 ownerInitial: "P",
                 verified: true,
                 gradientFrom: "#f093fb",
                 gradientTo: "#f5576c",
-                image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=900&q=85"
+                image: "https://s3-us-west-1.amazonaws.com/com.numerade/books/9781264134526.jpg"
             },
             {
                 id: 3,
