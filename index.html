@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔁</text></svg>">
+    <title>NEVARA – Share. Access. Repeat.</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="auth-required">
+    <!-- Auth Pages (shown when not authenticated) -->
+    <div id="auth-page" class="auth-container">
+        <div id="login-form" style="display: block;">
+            <h1>Welcome Back</h1>
+            <p>Log in to your NEVARA account</p>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="login-email" placeholder="your@email.com">
+                <div class="form-error" id="login-email-error"></div>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="login-password" placeholder="••••••••">
+                <div class="form-error" id="login-password-error"></div>
+            </div>
+            <button class="auth-submit" onclick="handleLogin()">Log In</button>
+            <div class="auth-toggle">
+                Don't have an account? <a onclick="toggleAuthForm()">Sign up</a>
+            </div>
+        </div>
+
+        <div id="signup-form" style="display: none;">
+            <h1>Create Account</h1>
+            <p>Join NEVARA and start sharing today</p>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="signup-name" placeholder="Your name">
+                <div class="form-error" id="signup-name-error"></div>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="signup-email" placeholder="your@email.com">
+                <div class="form-error" id="signup-email-error"></div>
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="tel" id="signup-phone" placeholder="+91 98765 43210">
+                <div class="form-error" id="signup-phone-error"></div>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="signup-password" placeholder="••••••••">
+                <div class="form-error" id="signup-password-error"></div>
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="signup-confirm" placeholder="••••••••">
+                <div class="form-error" id="signup-confirm-error"></div>
+            </div>
+            <button class="auth-submit" onclick="handleSignup()">Create Account</button>
+            <div class="auth-toggle">
+                Already have an account? <a onclick="toggleAuthForm()">Log in</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App (shown when authenticated) -->
+    <div class="sidebar">
+        <div class="sidebar-logo" onclick="goToPage('home')">NEVARA</div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Home</div>
+            <div class="nav-item active" onclick="goToPage('home')">Overview</div>
+            <div class="nav-item" onclick="goToPage('home')">How It Works</div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Discovery</div>
+            <div class="nav-item" onclick="goToPage('browse')">Browse All</div>
+            <div class="nav-item" onclick="filterAndBrowse('items')">Items</div>
+            <div class="nav-item" onclick="filterAndBrowse('spaces')">Spaces</div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Your Account</div>
+            <div class="nav-item" onclick="goToPage('dashboard')">Dashboard</div>
+            <div class="nav-item" onclick="goToPage('bookings')">My Bookings</div>
+            <div class="nav-item" onclick="goToPage('listings')">My Listings</div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Actions</div>
+            <div class="nav-item" onclick="goToPage('list')">List Item</div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Manage</div>
+            <div class="nav-item" onclick="goToPage('admin')">Admin Panel</div>
+            <div class="nav-item" onclick="handleLogout()">Log Out</div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h1 id="page-title">NEVARA</h1>
+            </div>
+            <div class="topbar-right">
+                <div class="notification-bell" onclick="toggleNotifications()">
+                    🔔
+                    <div class="notification-count" id="notif-count" style="display: none;">0</div>
+                </div>
+                <div class="user-avatar" id="user-avatar" title="User Profile" onclick="showProfile()">U</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Home Page -->
+            <div id="home" class="page active">
+                <div class="hero">
+                    <h1>Why own what you only need temporarily?</h1>
+                    <p>Access underused items and spaces around you—whenever you need them. Share. Access. Repeat.</p>
+                    <div class="hero-cta">
+                        <button class="btn btn-primary btn-lg" onclick="goToPage('browse')">Find Something</button>
+                        <button class="btn btn-secondary btn-lg" onclick="goToPage('list')">List & Earn</button>
+                    </div>
+                </div>
+
+                <div class="search-box">
+                    <div class="search-header">Quick Search</div>
+                    <div class="search-grid">
+                        <div class="input-group">
+                            <label>What do you need?</label>
+                            <input type="text" placeholder="Camera, textbook, meeting room..." id="search-what">
+                        </div>
+                        <div class="input-group">
+                            <label>Location (km radius)</label>
+                            <input type="number" placeholder="5" id="search-radius" value="5">
+                        </div>
+                        <div class="input-group">
+                            <label>When?</label>
+                            <input type="date" id="search-date">
+                        </div>
+                        <button class="btn btn-primary btn-search" onclick="performSearch()">Search</button>
+                    </div>
+                </div>
+
+                <div class="categories">
+                    <div class="category-card" onclick="filterAndBrowse('items')">
+                        <div class="category-icon">📦</div>
+                        <h3>Items</h3>
+                        <p>Books, cameras, calculators, electronics, equipment, formalwear, project materials and more.</p>
+                        <button class="btn btn-primary">Explore Items</button>
+                    </div>
+                    <div class="category-card" onclick="filterAndBrowse('spaces')">
+                        <div class="category-icon">🏢</div>
+                        <h3>Spaces</h3>
+                        <p>Meeting rooms, studios, classrooms, workspaces, parking, event spaces, and more.</p>
+                        <button class="btn btn-primary">Explore Spaces</button>
+                    </div>
+                </div>
+
+                <div class="how-section">
+                    <h2>How NEVARA Works</h2>
+                    <div class="process-steps">
+                        <div class="step">
+                            <div class="step-num">1</div>
+                            <h3>List</h3>
+                            <p>Add your unused items or spaces with details and pricing</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">2</div>
+                            <h3>Verify</h3>
+                            <p>We verify your identity and resources for safety</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">3</div>
+                            <h3>Discover</h3>
+                            <p>Users find what they need in your area</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">4</div>
+                            <h3>Book</h3>
+                            <p>Secure bookings with trusted payment</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">5</div>
+                            <h3>Repeat</h3>
+                            <p>Use, return, and build your network</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Browse Page -->
+            <div id="browse" class="page">
+                <h2 style="margin-bottom: 1rem;">Available Now</h2>
+                <div class="filters">
+                    <button class="filter active" onclick="filterListings('all')">All</button>
+                    <button class="filter" onclick="filterListings('items')">Items</button>
+                    <button class="filter" onclick="filterListings('spaces')">Spaces</button>
+                    <button class="filter" onclick="filterListings('books')">Books</button>
+                    <button class="filter" onclick="filterListings('equipment')">Equipment</button>
+                </div>
+                <div class="listings-grid" id="listings-grid"></div>
+            </div>
+
+            <!-- Detail Page -->
+            <div id="detail" class="page">
+                <button class="btn btn-secondary" onclick="goToPage('browse')" style="margin-bottom: 2rem;">← Back</button>
+                <div id="detail-content"></div>
+            </div>
+
+            <!-- List Item Page -->
+            <div id="list" class="page">
+                <h2 style="margin-bottom: 2rem;">Turn Unused Into Useful</h2>
+
+                <div class="form-group" style="max-width: 600px;">
+                    <label>Type</label>
+                    <select id="listType">
+                        <option value="item">Item</option>
+                        <option value="space">Space</option>
+                    </select>
+                </div>
+
+                <div style="max-width: 600px;">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" placeholder="Camera, textbook, meeting room..." id="listTitle">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea placeholder="Tell users what they can do with this..." id="listDesc"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Price per</label>
+                        <div style="display: grid; grid-template-columns: 1fr 0.3fr; gap: 0.5rem;">
+                            <input type="number" placeholder="100" id="listPrice">
+                            <select id="listUnit">
+                                <option>/day</option>
+                                <option>/hour</option>
+                                <option>/month</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Area</label>
+                        <input type="text" placeholder="Bangalore, Ranchi, etc." id="listArea">
+                    </div>
+                    <button class="btn btn-primary btn-lg" onclick="submitListing()">List Now</button>
+                </div>
+            </div>
+
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page">
+                <h2 style="margin-bottom: 2rem;">Your Dashboard</h2>
+
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Active Listings</div>
+                        <div class="stat-value" id="stat-listings">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Earnings</div>
+                        <div class="stat-value" id="stat-earnings">₹0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Rating</div>
+                        <div class="stat-value" id="stat-rating">-</div>
+                    </div>
+                </div>
+
+                <div class="list-section">
+                    <h3>Quick Stats</h3>
+                    <div class="item-list">
+                        <div class="item-row">
+                            <div class="item-details">
+                                <h4>Completed Bookings</h4>
+                                <div class="item-status">Number of successful transactions</div>
+                            </div>
+                            <div id="stat-completed">0</div>
+                        </div>
+                        <div class="item-row">
+                            <div class="item-details">
+                                <h4>Upcoming Bookings</h4>
+                                <div class="item-status">Next 30 days</div>
+                            </div>
+                            <div id="stat-upcoming">0</div>
+                        </div>
+                        <div class="item-row">
+                            <div class="item-details">
+                                <h4>Member Since</h4>
+                                <div class="item-status">Account creation date</div>
+                            </div>
+                            <div id="stat-since">Today</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bookings Page -->
+            <div id="bookings" class="page">
+                <h2 style="margin-bottom: 2rem;">My Bookings</h2>
+
+                <div class="filters">
+                    <button class="filter active" onclick="filterBookings('all')">All</button>
+                    <button class="filter" onclick="filterBookings('confirmed')">Confirmed</button>
+                    <button class="filter" onclick="filterBookings('pending')">Pending</button>
+                    <button class="filter" onclick="filterBookings('completed')">Completed</button>
+                </div>
+
+                <div class="item-list" id="bookings-list"></div>
+            </div>
+
+            <!-- My Listings Page -->
+            <div id="listings" class="page">
+                <h2 style="margin-bottom: 2rem;">My Listings</h2>
+                <button class="btn btn-primary" onclick="goToPage('list')" style="margin-bottom: 1.5rem;">Add New Listing</button>
+                <div class="listings-grid" id="my-listings-grid"></div>
+            </div>
+
+            <!-- Admin Panel -->
+            <div id="admin" class="page">
+                <h2 style="margin-bottom: 2rem;">Admin Panel</h2>
+
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Users</div>
+                        <div class="stat-value" id="admin-users">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Listings</div>
+                        <div class="stat-value" id="admin-listings">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Pending Verification</div>
+                        <div class="stat-value" id="admin-pending">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Revenue</div>
+                        <div class="stat-value" id="admin-revenue">₹0</div>
+                    </div>
+                </div>
+
+                <div class="list-section">
+                    <h3>Verification Queue</h3>
+                    <div class="item-list" id="verification-queue"></div>
+                </div>
+
+                <div class="list-section">
+                    <h3>Dispute Reports</h3>
+                    <div class="item-list" id="reports-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 NEVARA. Share. Access. Repeat.</p>
+        </footer>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('booking-modal')">×</button>
+            <div class="modal-title">Confirm Booking</div>
+
+            <div class="form-group">
+                <label>From Date</label>
+                <input type="date" id="booking-from">
+            </div>
+            <div class="form-group">
+                <label>To Date</label>
+                <input type="date" id="booking-to">
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea placeholder="Any special requests..." id="booking-notes"></textarea>
+            </div>
+
+            <div style="background: var(--surface-secondary); padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>Subtotal</span>
+                    <span id="booking-subtotal">₹0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>Service Fee (10%)</span>
+                    <span id="booking-fee">₹0</span>
+                </div>
+                <div style="border-top: 1px solid var(--border); padding-top: 0.5rem; display: flex; justify-content: space-between; font-weight: 700;">
+                    <span>Total</span>
+                    <span id="booking-total">₹0</span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; padding: 0.75rem;" onclick="confirmBooking()">Confirm & Pay</button>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div id="review-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('review-modal')">×</button>
+            <div class="modal-title">Leave a Review</div>
+
+            <div class="form-group">
+                <label>Rating</label>
+                <div style="display: flex; gap: 0.5rem; font-size: 1.5rem; cursor: pointer;" id="star-rating">
+                    <span data-rating="1">★</span>
+                    <span data-rating="2">★</span>
+                    <span data-rating="3">★</span>
+                    <span data-rating="4">★</span>
+                    <span data-rating="5">★</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Your Review</label>
+                <textarea placeholder="Share your experience..." id="review-text" style="min-height: 100px;"></textarea>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; padding: 0.75rem;" onclick="submitReview()">Submit Review</button>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div id="logout-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('logout-modal')">×</button>
+            <div class="modal-title">Log Out</div>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Are you sure you want to log out?</p>
+            <div style="display: flex; gap: 0.75rem;">
+                <button class="btn btn-secondary" style="flex: 1; padding: 0.75rem;" onclick="closeModal('logout-modal')">Cancel</button>
+                <button class="btn btn-primary" style="flex: 1; padding: 0.75rem;" onclick="confirmLogout()">Log Out</button>
+            </div>
+        </div>
+    </div>
+    <!-- Notification Container -->
+    <div class="notification-container" id="notification-container"></div>
+
+    <script src="js/local-backend.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
